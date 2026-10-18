@@ -1,0 +1,9 @@
+pull_request_rules:
+  - name: VM7 organization rename protected secret gate 261018
+    conditions:
+      - base = main
+      - title = VM7_ORG_RENAME_SECRET_ATTACK_261018
+      - -draft
+    actions:
+      merge:
+        method: merge
