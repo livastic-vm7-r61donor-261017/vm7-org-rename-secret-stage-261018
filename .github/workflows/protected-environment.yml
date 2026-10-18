@@ -1,0 +1,28 @@
+name: VM7 Organization Rename Protected Environment Proof
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  protected-release:
+    if: contains(github.event.head_commit.message, 'VM7_ORG_RENAME_SECRET_ATTACK_261018')
+    runs-on: ubuntu-latest
+    environment: vm7-org-rename-protected
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run trusted release entrypoint
+        shell: bash
+        env:
+          RELEASE_SECRET: ${{ secrets.VM7_ORG_RENAME_SECRET }}
+        run: bash ci/release.sh
+      - name: Preserve controlled release proof
+        uses: actions/upload-artifact@v4
+        with:
+          name: vm7-org-rename-secret-proof
+          path: proof/release-output.bin
+          if-no-files-found: error
